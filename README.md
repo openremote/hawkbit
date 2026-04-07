@@ -37,11 +37,13 @@ The JVM is started with:
 
 ## Configuration
 
-These settings are the main runtime properties used by this image in Compose deployments. They can be supplied as Spring properties, command-line arguments, or environment variables, depending on how you run the container.
+These settings are the main runtime properties used by this image in Compose deployments. They can be supplied as Spring properties, command-line arguments, or environment variables, depending on how you run the container. When using Compose, mount `/opt/hawkbit/data` for persistent hawkBit data.
 
-Example Compose environment entries:
+Example Compose service entries:
 
 ```yaml
+volumes:
+  - hawkbit-data:/opt/hawkbit/data
 environment:
   - LOGGING_LEVEL_ROOT=INFO
   - SPRING_DATASOURCE_URL=jdbc:postgresql://hawkbitdb:5432/hawkbit
