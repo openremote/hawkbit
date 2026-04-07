@@ -47,22 +47,22 @@ environment:
   - SPRING_DATASOURCE_URL=jdbc:postgresql://hawkbitdb:5432/hawkbit
   - SPRING_DATASOURCE_USERNAME=${HAWKBIT_DB_USER:-postgres}
   - SPRING_DATASOURCE_PASSWORD=${HAWKBIT_DB_PASSWORD:-postgres}
-  - spring.jpa.database=POSTGRESQL
-  - spring.datasource.driverClassName=org.postgresql.Driver
-  - hawkbit.dmf.rabbitmq.enabled=false
-  - hawkbit.artifact.url.protocols.download-http.port=8080
-  - hawkbit.artifact.url.protocols.download-http.protocol=http
-  - 'hawkbit.artifact.url.protocols.download-http.ref={protocol}://{hostnameRequest}:{port}$${server.servlet.context-path}/{tenant}/controller/v1/{controllerId}/softwaremodules/{softwareModuleId}/artifacts/{artifactFileName}'
-  - hawkbit.server.ddi.security.authentication.targettoken.enabled=true
-  - server.use-forward-headers=true
-  - server.forward-headers-strategy=NATIVE
-  - server.servlet.context-path=/hawkbit
-  - spring.security.oauth2.client.registration.oidc.client-id=hawkbit
-  - spring.security.oauth2.client.registration.oidc.client-secret=${HAWKBIT_CLIENT_SECRET:-secret}
-  - spring.security.oauth2.client.registration.oidc.authorization-grant-type=authorization_code
-  - spring.security.oauth2.client.registration.oidc.scope=openid
-  - spring.security.oauth2.client.provider.oidc.issuer-uri=http://keycloak:8080/auth/realms/master
-  - spring.security.oauth2.client.provider.oidc.user-name-attribute=preferred_username
+  - SPRING_JPA_DATABASE=POSTGRESQL
+  - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+  - HAWKBIT_DMF_RABBITMQ_ENABLED=false
+  - HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_PORT=8080
+  - HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_PROTOCOL=http
+  - 'HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_REF={protocol}://{hostnameRequest}:{port}$${server.servlet.context-path}/{tenant}/controller/v1/{controllerId}/softwaremodules/{softwareModuleId}/artifacts/{artifactFileName}'
+  - HAWKBIT_SERVER_DDI_SECURITY_AUTHENTICATION_TARGETTOKEN_ENABLED=true
+  - SERVER_USE_FORWARD_HEADERS=true
+  - SERVER_FORWARD_HEADERS_STRATEGY=NATIVE
+  - SERVER_SERVLET_CONTEXT_PATH=/hawkbit
+  - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=hawkbit
+  - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=${HAWKBIT_CLIENT_SECRET:-secret}
+  - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_AUTHORIZATION_GRANT_TYPE=authorization_code
+  - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_SCOPE=openid
+  - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:8080/auth/realms/master
+  - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_USER_NAME_ATTRIBUTE=preferred_username
 ```
 
 ### Logging
@@ -142,4 +142,5 @@ Requests the `openid` scope.
 `spring.security.oauth2.client.provider.oidc.issuer-uri=http://keycloak:8080/auth/realms/master`
 OIDC issuer metadata endpoint.
 
-`spring.security.oauth2.client.provider.oidc.user-name-attribute=preferred_username` The principal name.
+`spring.security.oauth2.client.provider.oidc.user-name-attribute=preferred_username`
+The principal name.

@@ -30,15 +30,15 @@ jobs:
       - name: Set tags
         id: set-tags
         run: |
-          if [ -z "$TAG" ]; then
-            echo "TAG=-t ${IMAGE_NAME}:develop" >> "$GITHUB_ENV"
+          if [ -z "$RELEASE_TAG" ]; then
+            echo "DOCKER_TAG_ARGS=-t ${IMAGE_NAME}:develop" >> "$GITHUB_ENV"
             echo "dockerImage=${IMAGE_NAME}:develop" >> "$GITHUB_OUTPUT"
           else
-            echo "TAG=-t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:$TAG" >> "$GITHUB_ENV"
-            echo "dockerImage=${IMAGE_NAME}:$TAG" >> "$GITHUB_OUTPUT"
+            echo "DOCKER_TAG_ARGS=-t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:$RELEASE_TAG" >> "$GITHUB_ENV"
+            echo "dockerImage=${IMAGE_NAME}:$RELEASE_TAG" >> "$GITHUB_OUTPUT"
           fi
         env:
-          TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -65,7 +65,7 @@ jobs:
 
       - name: Build and push images
         run: |
-          docker build --build-arg GIT_COMMIT=${{ github.sha }} --push --platform $PLATFORM $TAG .
+          docker build --build-arg GIT_COMMIT=${{ github.sha }} --push --platform $PLATFORM $DOCKER_TAG_ARGS .
 
       - name: Scan hawkbit docker image
         uses: anchore/scan-action@3c9a191a0fbab285ca6b8530b5de5a642cba332f # v7.2.2
