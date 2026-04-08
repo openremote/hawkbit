@@ -85,64 +85,64 @@ Database username.
 `SPRING_DATASOURCE_PASSWORD=${HAWKBIT_DB_PASSWORD:-postgres}`
 Database password.
 
-`spring.jpa.database=POSTGRESQL`
+`SPRING_JPA_DATABASE=POSTGRESQL`
 Selects PostgreSQL for Spring JPA.
 
-`spring.datasource.driverClassName=org.postgresql.Driver`
+`SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver`
 Uses the PostgreSQL JDBC driver.
 
 ### Messaging
 
-`hawkbit.dmf.rabbitmq.enabled=false`
+`HAWKBIT_DMF_RABBITMQ_ENABLED=false`
 Disables the optional DMF RabbitMQ integration.
 
 ### Artifact URLs
 
 These settings control the download links hawkBit returns to devices for artifacts.
 
-`hawkbit.artifact.url.protocols.download-http.port=8080`
+`HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_PORT=8080`
 External port used in generated artifact URLs.
 
-`hawkbit.artifact.url.protocols.download-http.protocol=http`
+`HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_PROTOCOL=http`
 Protocol used in generated artifact URLs.
 
-`hawkbit.artifact.url.protocols.download-http.ref={protocol}://{hostnameRequest}:{port}$${server.servlet.context-path}/{tenant}/controller/v1/{controllerId}/softwaremodules/{softwareModuleId}/artifacts/{artifactFileName}`
+`HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_REF={protocol}://{hostnameRequest}:{port}$${server.servlet.context-path}/{tenant}/controller/v1/{controllerId}/softwaremodules/{softwareModuleId}/artifacts/{artifactFileName}`
 Template used to build the artifact download URL.
 
 ### DDI Security
 
-`hawkbit.server.ddi.security.authentication.targettoken.enabled=true`
+`HAWKBIT_SERVER_DDI_SECURITY_AUTHENTICATION_TARGETTOKEN_ENABLED=true`
 Enables target token authentication for the Direct Device Integration API.
 
 ### Reverse Proxy
 
-hawkBit documentation for reverse-proxy deployments explicitly calls out `server.forward-headers-strategy=NATIVE` so generated URLs match the client-facing scheme and headers.
+hawkBit documentation for reverse-proxy deployments explicitly calls out `SERVER_FORWARD_HEADERS_STRATEGY=NATIVE` so generated URLs match the client-facing scheme and headers.
 
-`server.forward-headers-strategy=NATIVE`
+`SERVER_FORWARD_HEADERS_STRATEGY=NATIVE`
 Uses native forwarded-header handling for reverse proxy deployments.
 
-`server.use-forward-headers=true`
+`SERVER_USE_FORWARD_HEADERS=true`
 Legacy forwarded-header setting that appears in some deployments; keep only if you specifically rely on it.
 
-`server.servlet.context-path=/hawkbit`
+`SERVER_SERVLET_CONTEXT_PATH=/hawkbit`
 Serves hawkBit under the `/hawkbit` path prefix.
 
 ### OIDC
 
-`spring.security.oauth2.client.registration.oidc.client-id=hawkbit`
+`SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=hawkbit`
 OIDC client ID used by hawkBit.
 
-`spring.security.oauth2.client.registration.oidc.client-secret=${HAWKBIT_CLIENT_SECRET:-secret}`
+`SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=${HAWKBIT_CLIENT_SECRET:-secret}`
 OIDC client secret.
 
-`spring.security.oauth2.client.registration.oidc.authorization-grant-type=authorization_code`
+`SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_AUTHORIZATION_GRANT_TYPE=authorization_code`
 Uses the authorization code flow.
 
-`spring.security.oauth2.client.registration.oidc.scope=openid`
+`SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_SCOPE=openid`
 Requests the `openid` scope.
 
-`spring.security.oauth2.client.provider.oidc.issuer-uri=http://keycloak:8080/auth/realms/master`
+`SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:8080/auth/realms/master`
 OIDC issuer metadata endpoint.
 
-`spring.security.oauth2.client.provider.oidc.user-name-attribute=preferred_username`
+`SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_USER_NAME_ATTRIBUTE=preferred_username`
 The principal name.
