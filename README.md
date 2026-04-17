@@ -134,10 +134,10 @@ Serves hawkBit under the `/hawkbit` path prefix.
 ### OAuth2
 
 `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8081/auth/realms/master`
-Public issuer URI exposed to browsers and API clients. This should match the issuer embedded in the JWTs.
+Issuer URI that hawkBit uses to validate the JWT `iss` claim and, depending on configuration, for issuer discovery. This must exactly match the issuer value in the tokens accepted by hawkBit. In containerized deployments, use the externally advertised issuer URL if that is the value included in the tokens' `iss` claim; use an internal container-network URL only if your identity provider actually issues tokens with that internal issuer.
 
 `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs`
-Internal JWK set endpoint used by the container to fetch signing keys from Keycloak on the Compose network.
+JWK set endpoint that the hawkBit container uses to fetch signing keys. This can be an internal Compose-network URL such as `http://keycloak:8080/...` even when `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI` is set to the host-reachable issuer URL from the tokens.
 
 `HAWKBIT_SERVER_SECURITY_OAUTH2_RESOURCESERVER_ENABLED=true`
 Enables hawkBit's OAuth2 resource-server security integration.
