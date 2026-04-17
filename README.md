@@ -46,25 +46,29 @@ volumes:
   - hawkbit-artifact-data:/opt/hawkbit/artifactrepo
 environment:
   - LOGGING_LEVEL_ROOT=INFO
+  # DATASOURCE
   - SPRING_DATASOURCE_URL=jdbc:postgresql://hawkbitdb:5432/hawkbit
   - SPRING_DATASOURCE_USERNAME=${HAWKBIT_DB_USER:-postgres}
   - SPRING_DATASOURCE_PASSWORD=${HAWKBIT_DB_PASSWORD:-postgres}
   - SPRING_JPA_DATABASE=POSTGRESQL
   - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+  # RABBITMQ INTEGRATION
   - HAWKBIT_DMF_RABBITMQ_ENABLED=false
+  # ARTIFACT ACCESS
   - HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_PORT=8080
   - HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_PROTOCOL=http
   - 'HAWKBIT_ARTIFACT_URL_PROTOCOLS_DOWNLOAD_HTTP_REF={protocol}://{hostnameRequest}:{port}$${server.servlet.context-path}/{tenant}/controller/v1/{controllerId}/softwaremodules/{softwareModuleId}/artifacts/{artifactFileName}'
   - HAWKBIT_SERVER_DDI_SECURITY_AUTHENTICATION_TARGETTOKEN_ENABLED=true
+  # REVERSE PROXY
   - SERVER_USE_FORWARD_HEADERS=true
   - SERVER_FORWARD_HEADERS_STRATEGY=NATIVE
   - SERVER_SERVLET_CONTEXT_PATH=/hawkbit
-  - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=hawkbit
-  - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=${HAWKBIT_CLIENT_SECRET:-secret}
-  - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_AUTHORIZATION_GRANT_TYPE=authorization_code
-  - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_SCOPE=openid
-  - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:8080/auth/realms/master
-  - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_USER_NAME_ATTRIBUTE=preferred_username
+  # SPRING SECURITY OAUTH2
+  - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8081/auth/realms/master
+  - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs
+  - HAWKBIT_SERVER_SECURITY_OAUTH2_RESOURCESERVER_ENABLED=true
+  - HAWKBIT_SERVER_SECURITY_OAUTH2_RESOURCESERVER_JWT_CLAIM_USERNAME=preferred_username
+  - HAWKBIT_SERVER_SECURITY_OAUTH2_RESOURCESERVER_JWT_CLAIM_ROLES=resource_access.hawkbit.roles
 ```
 
 ### Logging
@@ -127,22 +131,19 @@ Legacy forwarded-header setting that appears in some deployments; keep only if y
 `SERVER_SERVLET_CONTEXT_PATH=/hawkbit`
 Serves hawkBit under the `/hawkbit` path prefix.
 
-### OIDC
+### OAuth2
 
-`SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=hawkbit`
-OIDC client ID used by hawkBit.
+`SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8081/auth/realms/master`
+Public issuer URI exposed to browsers and API clients. This should match the issuer embedded in the JWTs.
 
-`SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=${HAWKBIT_CLIENT_SECRET:-secret}`
-OIDC client secret.
+`SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs`
+Internal JWK set endpoint used by the container to fetch signing keys from Keycloak on the Compose network.
 
-`SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_AUTHORIZATION_GRANT_TYPE=authorization_code`
-Uses the authorization code flow.
+`HAWKBIT_SERVER_SECURITY_OAUTH2_RESOURCESERVER_ENABLED=true`
+Enables hawkBit's OAuth2 resource-server security integration.
 
-`SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_SCOPE=openid`
-Requests the `openid` scope.
+`HAWKBIT_SERVER_SECURITY_OAUTH2_RESOURCESERVER_JWT_CLAIM_USERNAME=preferred_username`
+JWT claim used as the hawkBit username.
 
-`SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:8080/auth/realms/master`
-OIDC issuer metadata endpoint.
-
-`SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_USER_NAME_ATTRIBUTE=preferred_username`
-The principal name.
+`HAWKBIT_SERVER_SECURITY_OAUTH2_RESOURCESERVER_JWT_CLAIM_ROLES=resource_access.hawkbit.roles`
+JWT claim path used to extract hawkBit roles.
